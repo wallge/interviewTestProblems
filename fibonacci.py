@@ -3,6 +3,10 @@
 Created on Sun Nov  1 11:59:44 2015
 
 @author: Geoffrey Wall
+
+usage: python fibonacci.py -n <number of fibonacci numbers to generate>
+usage: python fibonacci.py -t <number of fibonacci numbers to generate and test against reference implementation>
+           
 """
 #!/usr/bin/python
 
@@ -111,48 +115,46 @@ def isPrime(n):
     #if we pass the above tests, then this is a prime    
     return True    
             
-            
+#this function implements the faster, less naive version of what the 
+#interview problem is asking for            
 def generateInterviewProblemResult(n):
     myList = []
     for i in range(0, n+1):
-        fib = genFibLinAlg(i)
-        myList.append(fib)
-        #if fib % 3 == 0:
-        #    myList.append('Buzz')
-        #elif fib % 5 == 0:
-        #    myList.append('Fizz')
-        #elif isPrime(i):
-        #    myList.append('BuzzFizz')
-        #else:
-        #    myList.append(fib)
-            
-            
-          
+        fib = genFibFast(i)
+        #method below runs into precision issues 
+        #genFibLinAlg(i)
+        if fib % 3 == 0:
+            myList.append('Buzz')
+        elif fib % 5 == 0:
+            myList.append('Fizz')
+        elif isPrime(i):
+            myList.append('BuzzFizz')
+        else:
+            myList.append(fib)
+
     return myList            
 
    
-
+#this function implements the dumb but simpler reference implementation 
+#of what the interview problem is asking for 
 def generateReferenceResult(n):
     myList = []
     
     for i in range(0, n+1):
         fib = genFibMemConstrained(i)
-        myList.append(fib)
-        #if fib % 3 == 0:
-        #    myList.append('Buzz')
-        #elif fib % 5 == 0:
-        #    myList.append('Fizz')
-        #elif isPrimeNaive(i):
-        #     myList.append('BuzzFizz')
-        #else:
-        #    myList.append(fib)
+        if fib % 3 == 0:
+            myList.append('Buzz')
+        elif fib % 5 == 0:
+            myList.append('Fizz')
+        elif isPrimeNaive(i):
+             myList.append('BuzzFizz')
+        else:
+            myList.append(fib)
           
     return myList              
            
         
 def main(argv):
-    #print 'Number of arguments:', len(argv), 'arguments.'
-    #print 'Argument List:', str(argv)
     
     if len(argv) < 2:
         print 'usage: python fibonacci.py -n <number of fibonacci numbers to generate>'
@@ -171,21 +173,17 @@ def main(argv):
             for i in range(0, len(myResult)):
                 if myResult[i] != referenceResult[i]:
                     print "Reference Implementation does not match my implementation for n = " + str(i)
-                    print "reference value = " + str(referenceResult[i])
-                    print "generated value = " + str(myResult[i])
+                    print "Reference value = " + str(referenceResult[i])
+                    print "Generated value = " + str(myResult[i])
                     caughtError = True
                     
             if caughtError == False:
-               print 'reference implementation matched my implementation for all ' + str(i) + ' fibonacci numbers'
+               print 'Reference implementation matched my implementation for all ' + str(i) + ' Fibonacci numbers!'
                 
         else:
             print 'usage: python fibonacci.py -n <number of fibonacci numbers to generate>'
             print 'usage: python fibonacci.py -t <number of fibonacci numbers to generate and test against reference implementation>'
            
-        
-    
-
-
 
 if __name__ == "__main__":
    main(sys.argv[1:])    
