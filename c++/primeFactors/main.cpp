@@ -1,11 +1,12 @@
 #include <iostream>
 #include <random>
-
+#include <climits>
 #include "primeFactorComputer.h"
 
 //generate numTests random numbers in the range 1 to INT_MAX and plug them into our primeFactorComputer class
 //we then calculate whether the answer is correct for each randomly generated input number
 //we return 0 if the test succeeds, -1 if it fails
+//this is only used for testing purposes and is not part of the main program
 int testPrimeFactors(int numTests) {
 
     //setup the random number generator
@@ -33,13 +34,26 @@ int testPrimeFactors(int numTests) {
 }
 
 int main() {
-    //int input = 5280;
 
-    //primeFactorsVectorType primeFactors = findPrimeFactors(input);
-    //std::cout << "size = " << primeFactors.size() << std::endl;
-    //std::cout << std::endl << "input = " << input << " check = " << evaluatePrimeFactors(primeFactors);
+    unsigned long i;
 
-    std::cout << testPrimeFactors(1000000);
+    while(1) {
+        //executes loop if the input fails (e.g., no characters were read)
+        while (std::cout << "Please enter an integer.\n" && !(std::cin >> i)) {
+            std::cin.clear(); //clear bad input flag
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //discard input
+            std::cout << "Invalid input. Exiting." << std::endl;
+            return -1;
+        }
+
+        if (i > INT_MAX) {
+            std::cout << "Input exceeds maximum int32 value: " << INT_MAX << ". Exiting." << std::endl;
+            return -1;
+        }
+
+        primeFactorComputer testPrimeFactors((int)i);
+        testPrimeFactors.printPrimeFactors();
+    }
 
     return 0;
 }

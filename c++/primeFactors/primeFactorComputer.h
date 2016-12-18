@@ -88,12 +88,22 @@ public:
         //return primeFactors;
     }
 
+    //this prints the result of the calculation formatted per the interview question's requirement
     void printPrimeFactors() {
         if (primeFactors.empty())
             return;
 
-        for (auto i = primeFactors.begin(); i != primeFactors.end(); ++i)
-            std::cout << i->first << '^' << i->second << ' ';
+        for (auto i = primeFactors.begin(); i != primeFactors.end(); ++i) {
+            std::cout << i->first;
+            //only print the exponent if it is larger than 1
+            if (i->second > 1)
+                std::cout << '^' << i->second;
+            //if we are not at the last item in the vector, print the asterisk
+            if (i+1 != primeFactors.end())
+                std::cout << " * ";
+            else
+                std::cout << std::endl << std::endl;
+        }
     }
 
     //check if a number is prime (this is only used to verify correctness)
