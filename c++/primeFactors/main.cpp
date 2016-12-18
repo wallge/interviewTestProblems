@@ -2,6 +2,7 @@
 #include <random>
 #include <climits>
 #include <cstdlib>
+#include <sstream>
 #include "primeFactorComputer.h"
 
 //generate numTests random numbers in the range 1 to INT_MAX and plug them into our primeFactorComputer class
@@ -50,7 +51,6 @@ int testPrimeFactors(int numTests) {
 int main(int argc, char **argv) {
 
     if ( argc >= 2 ) {
-        std::cout << argv[0] << ' ' << argv[1] << std::endl;
         int i = atoi(argv[1]);
         testPrimeFactors(i);
     } else {
@@ -58,13 +58,18 @@ int main(int argc, char **argv) {
         signed long i;
 
         while (1) {
-            //executes loop if the input fails (e.g., no characters were read)
-            while (std::cout << "Please enter an integer.\n" && !(std::cin >> i)) {
-                std::cin.clear(); //clear bad input flag
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //discard input
+            std::cout << "Please enter an integer." << std::endl;
+            std::string s;
+
+            std::getline(std::cin, s);
+            if (s.length() == 0) {
                 std::cout << "Invalid input. Exiting." << std::endl;
                 return -1;
             }
+
+            std::stringstream ss(s);
+            ss >> i;
+
 
             if (i > INT_MAX) {
                 std::cout << "Input exceeds maximum int32 value: " << INT_MAX << ". Exiting." << std::endl;

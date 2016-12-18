@@ -33,14 +33,13 @@ public:
         findPrimeFactors();
     }
 
-    //for a given input int, find the prime factors and return them in a vector
+    //for a given input int, find the prime factors and store them in a vector
     void findPrimeFactors() {
         int i = 0;
         int n = number;
 #if DEBUG
         std::cout << std::endl << "input = " << n << " prime factors:";
 #endif
-        //primeFactorsVectorType primeFactors;
         // First handle all of the prime factors which are equal to 2
         while (n%2 == 0) {
 #if DEBUG
@@ -84,8 +83,6 @@ public:
         }
 
         std::cout << std::endl;
-
-        //return primeFactors;
     }
 
     //this prints the result of the calculation formatted per the interview question's requirement
