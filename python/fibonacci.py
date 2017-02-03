@@ -21,9 +21,40 @@ def genFibRecursive(n):
         return 1
     else:
         return genFibRecursive(n-1) + genFibRecursive(n-2)
+
+
+# generate the fibonacci sequence recursively, but this time using a
+# dictionary to store already computed fibonacci numbers
+def genFibMemoized(n, memo):
+    if n == 0:
+        return 0
+    elif n == 1:
+        return 1
+    else:
+        ##check to see if we have already computed this fibonacci number and stored it in
+        ##our dictionary
+        if n in memo:
+            return memo[n]
+        else:
+            n_1 = 0
+            if n-1 in memo:
+                n_1 = memo[n-1]
+            else:
+                n_1 = genFibMemoized(n-1, memo)
+
+            n_2 = 0
+            if n-2 in memo:
+                n_2 = memo[n-2]
+            else:
+                n_2 = genFibMemoized(n-2, memo)
+
+            fib = n_1 + n_2
+            memo[n] = fib
+
+    return fib
    
 #generate the fibbonacci sequence looping over fibbonacci's 2 thru n and summing previous values   
-#this is less expensive in compute time as well as memory consumed compared to above
+#this is less expensive in compute time as well as memory consumed compared to the naive recursive formulation
 def genFibMemConstrained(n):
     if n == 0:
         return 0
@@ -33,16 +64,16 @@ def genFibMemConstrained(n):
     Fn = 0
     FnMinusOne = 1
     FnMinusTwo = 0
-    for i in range(2 , n+1):
+    for i in range(2, n+1):
         Fn = FnMinusOne + FnMinusTwo
         FnMinusTwo = FnMinusOne
         FnMinusOne = Fn
         
     return Fn
         
-#generate the fibbonicci sequence using the linear albebra formulation by exponentiating  
+#generate the fibbonacci sequence using the linear algebra formulation by exponentiating
 #the fibonacci matrix [1, 1; 1, 0] to the n-1th power and returning the 0,0th element of the resultant matrix
-#this comes from the difference equation formulation form here:
+#this comes from the difference equation formulation from here:
 #https://en.wikipedia.org/wiki/Fibonacci_number#Matrix_form
 #note::this runs into precision issues once we get to n = 94      
 def genFibLinAlg(n):
@@ -57,8 +88,8 @@ def genFibLinAlg(n):
     F = M**(n-1) 
     return F[0, 0]   
     
-#this method uses the recurrerence relation from here:
-# https://en.wikipedia.org/wiki/Fibonacci_number#Closed-form_expression    
+#this method uses the recurrence relation from here:
+# https://en.wikipedia.org/wiki/Fibonacci_number#Closed-form_expression
 def genFibFast(n):
     def _inner(n):
         if n == 0:
@@ -87,9 +118,9 @@ def genFibGoldenRatio(n):
 def isPrimeNaive(n):
     if n < 2:
         return False
-      
+
     for i in range(2, n):
-        if  n % i == 0:
+        if n % i == 0:
             return False
 
     return True
@@ -141,7 +172,8 @@ def generateReferenceResult(n):
     myList = []
     
     for i in range(0, n+1):
-        fib = genFibMemConstrained(i)
+        #fib = genFibMemConstrained(i)
+        fib = genFibMemoized(i, dict())
         if fib % 3 == 0:
             myList.append('Buzz')
         elif fib % 5 == 0:
@@ -186,5 +218,4 @@ def main(argv):
            
 
 if __name__ == "__main__":
-   main(sys.argv[1:])    
-        
+    main(sys.argv[1:])
